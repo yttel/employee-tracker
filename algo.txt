@@ -1,0 +1,26 @@
+main menu
+add - dept, employee, role
+view - dept, employee, role
+update - employee info, role, department
+delete - department, role, employee (not really deleting, active vs inactive)
+
+add cancel/go back to main for all
+
+ADD
+dept - get name
+employee - get name, role (from existing), manager (from existing)
+role - get title, salary, department
+
+VIEW
+dept - show all department where active
+role - show all role where active
+employee - single, all current, employment history
+emp by manager - show all employees where manager & active
+total salary by dept
+
+UPDATE
+employee - role or manager, from list of existing
+
+DELETE
+department - find all emp with that dept id, clear pointer, 
+
