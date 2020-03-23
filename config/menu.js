@@ -179,8 +179,64 @@ const menu = {
 
   },
 
-  addDept: function(){},
-  addRole: function(){},
+  addDept: function(){  
+    inquirer
+    .prompt({
+      name: "name",
+      type: "input",
+      message: "Department name?"
+    })
+    .then(function(answer) {
+      dal.insertDept(answer.name);
+    });
+  },
+
+  addRole: function(){
+    inquirer
+    .prompt({
+      name: "title",
+      type: "input",
+      message: "Role Title?"
+    },{
+      name: "salary",
+      type: "number",
+      message: "Salary?"
+    },{
+      name: "dept",
+      type: "list",
+      message: "Which department?",
+      choices: [
+        "claims", 
+        "sales", 
+        "product management",
+        "research", 
+        "executive"
+      ]
+    })
+    .then(function(answer) {
+      let deptCode;
+
+      switch (answer.dept) {
+        case "claims":
+          deptCode = 1;
+          break;
+        case "sales":
+          deptCode = 2;
+          break;
+        case "product management":
+          deptCode = 3;
+          break;
+        case "research":
+          deptCode = 4;
+          break;
+        case "executive":
+          roleCode = 5;
+          break;
+      }
+
+      dal.insertRole(answer.title, answer.salary, deptCode);
+    });
+  },
 
   view: function(){
     inquirer
@@ -189,30 +245,36 @@ const menu = {
         type: "list",
         message: "What would you like to view?",
         choices: [
-          "Current Employees",
+          "View all Employees (current)",
           "Former Employees",
-          "Roles",
-          "Departments",
+          "Departments (list)",
+          "Employees by Department",
+          "Job titles (list)",
+          "Roles (of employees)",
           "Total department budget"
         ]
       })
       .then(function(answer) {
         switch (answer.action[0]) {
-        case "D":
-          menu.dispEmpByDept();
+          case "V":
+            menu.dispAllCurrent();
+            break;
+          case "F":
+            menu.dispAllFormer();
+            break;
+          case "D":
+            dal.dispAllDept();
+          case "E":
+            menu.dispEmpByDept();
+            break;
+          case "J":
+            dal.dispAllRoles();
+          case "R":
+            menu.dispEmpByRole();
           break;
-        case "R":
-          menu.dispEmpByRole();
-          break;
-        case "C":
-          menu.dispAllCurrent();
-          break;
-        case "F":
-          menu.dispAllFormer();
-          break;
-        case "T":
-          menu.dispDeptBudget();
-          break;
+          case "T":
+            menu.dispDeptBudget();
+            break;
         }
       });
   },
@@ -372,46 +434,19 @@ const menu = {
       });
   },
 
-  // updateDept: function(){},
-  // updateRole: function(){},
-  // updateManager: function(){},
+  updateDept: function(){},
+  updateRole: function(){},
+  updateManager: function(){},
 
   terminate: function(){
     inquirer
       .prompt({
-        name: "action",
-        type: "list",
-        message: "Who would you like to terminate?",
-        choices: [
-          "Departments",
-          "Roles",
-          "Single Employee",
-          "Current Employees",
-          "Former Employees",
-          "Employment History"
-        ]
+        name: "empID",
+        type: "input",
+        message: "Who would you like to terminate?"
       })
       .then(function(answer) {
-        switch (answer.action[0]) {
-        case "D":
-          dispDept();
-          break;
-        case "R":
-          dispRole();
-          break;
-        case "S":
-          dispEmp();
-          break;
-        case "C":
-          dispAllCurrent();
-          break;
-        case "F":
-          dispAllFormer();
-          break;
-        case "E":
-          dispEmpHistory();
-          break;
-        }
+        
       });
   }
 }

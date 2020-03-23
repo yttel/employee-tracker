@@ -43,71 +43,28 @@ const dal = {
 
     connection.query(
       queryString,
-      [title, salary, dept_id],
+      [title, salary, deptID],
       function(err, result) {
         if (err) throw err;
-        console.table(result);
+        //console.table(result);
+        console.log(`New role created with role_id ${result.insertID}`);
         menu.mainMenu();
       }
     );
   },
 
-  insertDept: function(fName, lName, nRole, nMgr) {
+  insertDept: function(name) {
     const queryString =
-    "INSERT INTO employee (first_name, last_name, role_id, manager_id)" +
-    "VALUES (?, ?, ?, ?)"
+    "INSERT INTO department (dept_name)" +
+    "VALUES (?)"
 
     connection.query(
       queryString,
-      [fName, lName, nRole, nMgr],
+      [name],
       function(err, result) {
         if (err) throw err;
         console.table(result);
         menu.mainMenu();
-      }
-    );
-  },
-
-
-
-  dispEmpByDept: function(deptID) {
-    const queryString =
-      "SELECT CONCAT(first_name,' ', last_name) AS 'name', title, dept_name AS 'department', salary " + 
-      "FROM department INNER JOIN role " +
-      "ON department.dept_id = role.dept_id " +
-      "INNER JOIN employee " +
-      "ON role.role_id = employee.role_id " +
-      "WHERE department.dept_id = ? " +
-      "AND employee.active = 1";
-
-    connection.query(
-      queryString,
-      [deptID],
-      function(err, result) {
-        if (err) throw err;
-        console.table(result);
-        //menu.mainMenu();
-      }
-    );
-  },
-
-  dispEmpByRole: function(roleID) {
-    const queryString =
-      "SELECT CONCAT(first_name,' ', last_name) AS 'name', title, dept_name AS 'department', salary " + 
-      "FROM department INNER JOIN role " +
-      "ON department.dept_id = role.dept_id " +
-      "INNER JOIN employee " +
-      "ON role.role_id = employee.role_id " +
-      "WHERE role.role_id = ? " +
-      "AND employee.active = 1";
-
-    connection.query(
-      queryString,
-      [roleID],
-      function(err, result) {
-        if (err) throw err;
-        console.table(result);
-        //menu.mainMenu();
       }
     );
   },
@@ -128,9 +85,86 @@ const dal = {
         if (err) throw err;
         //console.log(`isActive: ${isActive}`)
         console.table(result);
+        menu.mainMenu();
       }
     );
   },
+
+  dispAllDept: function(){
+    const queryString =
+    "SELECT dept_name AS 'department' " + 
+    "FROM department";
+
+    connection.query(
+      queryString,
+      function(err, result) {
+        if (err) throw err;
+        console.log("\n");
+        console.table(result);
+        menu.mainMenu();
+      }
+    );
+  },
+
+  dispAllRoles: function(){
+    const queryString =
+      "SELECT dept_name AS 'department', title, salary " + 
+      "FROM department INNER JOIN role " +
+      "ON department.dept_id = role.dept_id ";
+
+    connection.query(
+      queryString,
+      function(err, result) {
+        if (err) throw err;
+        console.log("\n");
+        console.table(result);
+        menu.mainMenu();
+      }
+    );
+  },
+
+  dispEmpByDept: function(deptID) {
+    const queryString =
+      "SELECT CONCAT(first_name,' ', last_name) AS 'name', title, dept_name AS 'department', salary " + 
+      "FROM department INNER JOIN role " +
+      "ON department.dept_id = role.dept_id " +
+      "INNER JOIN employee " +
+      "ON role.role_id = employee.role_id " +
+      "WHERE department.dept_id = ? " +
+      "AND employee.active = 1";
+
+    connection.query(
+      queryString,
+      [deptID],
+      function(err, result) {
+        if (err) throw err;
+        console.table(result);
+        menu.mainMenu();
+      }
+    );
+  },
+
+  dispEmpByRole: function(roleID) {
+    const queryString =
+      "SELECT CONCAT(first_name,' ', last_name) AS 'name', title, dept_name AS 'department', salary " + 
+      "FROM department INNER JOIN role " +
+      "ON department.dept_id = role.dept_id " +
+      "INNER JOIN employee " +
+      "ON role.role_id = employee.role_id " +
+      "WHERE role.role_id = ? " +
+      "AND employee.active = 1";
+
+    connection.query(
+      queryString,
+      [roleID],
+      function(err, result) {
+        if (err) throw err;
+        console.table(result);
+        menu.mainMenu();
+      }
+    );
+  },
+
 
   //expects deptID int and deptName string
   totalSalary: function(deptID, deptName) {
@@ -147,6 +181,8 @@ const dal = {
         if (err) throw err;
         //console.table(result);
         console.log(`Total of salaries for ${deptName} is $` + result.reduce(( acc, cur ) => acc + cur.salary , 0));
+        console.log("\n");
+        menu.mainMenu();
       }
     );
   }
