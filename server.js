@@ -1,17 +1,5 @@
-var dal = require("./config/dal.js");
+// Assignment 12, written by Letty Bedard
 
-dal.selectWhere("employee", "active", 1);
+const menu = require("./config/menu.js");
 
-dal.selectWhere("employee", "manager_id", 3);
-
-dal.selectAndOrder(["first_name", "last_name"], "employee", "last_name");
-
-dal.findAllByActive(1);
-
-dal.findAllByActive(0);
-
-console.log(dal.totalSalary(1, "infotech"));
-
-
-
-// dal.findWhoHasMost("buyer_name", "buyer_id", "buyers", "pets");
+menu.mainMenu();

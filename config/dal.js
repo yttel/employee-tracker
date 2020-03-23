@@ -1,4 +1,5 @@
-var connection = require("./connection.js");
+const connection = require("./connection.js");
+const menu = require("./menu.js");
 
 const dal = {
   selectWhere: function(tableInput, colToSearch, valOfCol) {
@@ -10,7 +11,7 @@ const dal = {
     });
   },
   selectAndOrder: function(whatToSelect, table, orderCol) {
-    var queryString = "SELECT ?? FROM ?? ORDER BY ?? ASC";
+    const queryString = "SELECT ?? FROM ?? ORDER BY ?? ASC";
     console.log(queryString);
     connection.query(queryString, [whatToSelect, table, orderCol], function(err, result) {
       if (err) throw err;
@@ -18,9 +19,102 @@ const dal = {
       return result;
     });
   },
+
+  insertEmp: function(fName, lName, nRole, nMgr) {
+    const queryString =
+    "INSERT INTO employee (first_name, last_name, role_id, manager_id)" +
+    "VALUES (?, ?, ?, ?)"
+
+    connection.query(
+      queryString,
+      [fName, lName, nRole, nMgr],
+      function(err, result) {
+        if (err) throw err;
+        console.table(result);
+        menu.mainMenu();
+      }
+    );
+  },
+
+  insertRole: function(title, salary, deptID) {
+    const queryString =
+    "INSERT INTO role (title, salary, dept_id)" +
+    "VALUES (?, ?, ?)"
+
+    connection.query(
+      queryString,
+      [title, salary, dept_id],
+      function(err, result) {
+        if (err) throw err;
+        console.table(result);
+        menu.mainMenu();
+      }
+    );
+  },
+
+  insertDept: function(fName, lName, nRole, nMgr) {
+    const queryString =
+    "INSERT INTO employee (first_name, last_name, role_id, manager_id)" +
+    "VALUES (?, ?, ?, ?)"
+
+    connection.query(
+      queryString,
+      [fName, lName, nRole, nMgr],
+      function(err, result) {
+        if (err) throw err;
+        console.table(result);
+        menu.mainMenu();
+      }
+    );
+  },
+
+
+
+  dispEmpByDept: function(deptID) {
+    const queryString =
+      "SELECT CONCAT(first_name,' ', last_name) AS 'name', title, dept_name AS 'department', salary " + 
+      "FROM department INNER JOIN role " +
+      "ON department.dept_id = role.dept_id " +
+      "INNER JOIN employee " +
+      "ON role.role_id = employee.role_id " +
+      "WHERE department.dept_id = ? " +
+      "AND employee.active = 1";
+
+    connection.query(
+      queryString,
+      [deptID],
+      function(err, result) {
+        if (err) throw err;
+        console.table(result);
+        //menu.mainMenu();
+      }
+    );
+  },
+
+  dispEmpByRole: function(roleID) {
+    const queryString =
+      "SELECT CONCAT(first_name,' ', last_name) AS 'name', title, dept_name AS 'department', salary " + 
+      "FROM department INNER JOIN role " +
+      "ON department.dept_id = role.dept_id " +
+      "INNER JOIN employee " +
+      "ON role.role_id = employee.role_id " +
+      "WHERE role.role_id = ? " +
+      "AND employee.active = 1";
+
+    connection.query(
+      queryString,
+      [roleID],
+      function(err, result) {
+        if (err) throw err;
+        console.table(result);
+        //menu.mainMenu();
+      }
+    );
+  },
+
   findAllByActive: function(isActive) {
-    var queryString =
-      "SELECT first_name, last_name, manager_id, title, salary, dept_name " + 
+    const queryString =
+      "SELECT CONCAT(first_name,' ', last_name) AS 'name', title, dept_name AS 'department', salary " + 
       "FROM department INNER JOIN role " +
       "ON department.dept_id = role.dept_id " +
       "INNER JOIN employee " +
@@ -32,11 +126,13 @@ const dal = {
       [isActive],
       function(err, result) {
         if (err) throw err;
-        console.log(`isActive: ${isActive}`)
+        //console.log(`isActive: ${isActive}`)
         console.table(result);
       }
     );
   },
+
+  //expects deptID int and deptName string
   totalSalary: function(deptID, deptName) {
     var queryString =
       "SELECT salary " + 
