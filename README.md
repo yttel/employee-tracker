@@ -46,4 +46,6 @@ So that I can organize and plan my business
 
 1. Can't get the top menu to display again after info has been displayed/entered.
 
+2. Managers/Roles/Departments can be deleted leaving "orphan" dependencies.
+* fix - Rewrite flow using foreign keys.
 
