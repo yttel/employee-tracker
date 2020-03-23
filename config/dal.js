@@ -30,7 +30,8 @@ const dal = {
       [fName, lName, nRole, nMgr],
       function(err, result) {
         if (err) throw err;
-        console.table(result);
+        //console.table(result);
+        console.log(`New employee created with id ${result.insertID}`);
         menu.mainMenu();
       }
     );
@@ -63,7 +64,8 @@ const dal = {
       [name],
       function(err, result) {
         if (err) throw err;
-        console.table(result);
+        //console.table(result);
+        console.log(`New dept created with dept_id ${result.insertID}`);
         menu.mainMenu();
       }
     );
@@ -71,7 +73,7 @@ const dal = {
 
   findAllByActive: function(isActive) {
     const queryString =
-      "SELECT CONCAT(first_name,' ', last_name) AS 'name', title, dept_name AS 'department', salary " + 
+      "SELECT id, CONCAT(first_name,' ', last_name) AS 'name', title, dept_name AS 'department', salary " + 
       "FROM department INNER JOIN role " +
       "ON department.dept_id = role.dept_id " +
       "INNER JOIN employee " +
@@ -165,7 +167,6 @@ const dal = {
     );
   },
 
-
   //expects deptID int and deptName string
   totalSalary: function(deptID, deptName) {
     var queryString =
@@ -185,7 +186,26 @@ const dal = {
         menu.mainMenu();
       }
     );
-  }
+  },
+
+  terminateEmp: function(empID) {
+    const queryString =
+    "SELECT salary " + 
+    "FROM role INNER JOIN employee " +
+    "ON role.role_id = employee.role_id " +
+    "WHERE employee.active = 1 AND role.dept_id = ?";
+
+  connection.query(
+    queryString,
+    [empID],
+    function(err, result) {
+      if (err) throw err;
+      console.table(result);
+      //console.log(`New role created with role_id ${result.insertID}`);
+      menu.mainMenu();
+    }
+  );
+  },
 };
 
 module.exports = dal;

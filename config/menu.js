@@ -442,11 +442,11 @@ const menu = {
     inquirer
       .prompt({
         name: "empID",
-        type: "input",
+        type: "number",
         message: "Who would you like to terminate?"
       })
       .then(function(answer) {
-        
+        dal.terminateEmp(answer.empID);
       });
   }
 }
