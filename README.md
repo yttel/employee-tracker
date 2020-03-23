@@ -35,12 +35,15 @@ So that I can organize and plan my business
 [github source](https://github.com/yttel/employee-tracker)
 
 
-## Use Example
+## Use Examples
 
-![Use example](employee-tracker.gif)
+![Use example](.\assets\images\totalsalary.PNG)
+
+
+![Use example](.\assets\images\empbydept.PNG)
 
 ## Known Issues
 
-1. Can't get the top menu to display after info has been displayed/entered.
+1. Can't get the top menu to display again after info has been displayed/entered.
 
 

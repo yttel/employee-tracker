@@ -1,4 +1,4 @@
-var dal = require("./config/dal.js");
+var dal = require("../config/dal.js");
 
 //dal.selectWhere("employee", "active", 1);
 
